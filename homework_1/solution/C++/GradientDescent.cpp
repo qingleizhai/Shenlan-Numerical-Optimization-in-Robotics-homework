@@ -9,7 +9,7 @@ double f(const std::vector<double>& x) {
     double result = 0.0;
 
     for (int i = 0; i < N / 2; i++) {
-        double term1 = 100 * (pow(x[2 * i] * x[2 * i], 2) - x[2 * i + 1]) * (pow(x[2 * i] * x[2 * i], 2) - x[2 * i + 1]);
+        double term1 = 100 * (x[2 * i] * x[2 * i] - x[2 * i + 1]) * (x[2 * i] * x[2 * i] - x[2 * i + 1]);
         double term2 = (x[2 * i] - 1) * (x[2 * i] - 1);
         result += term1 + term2;
     }
@@ -23,11 +23,11 @@ std::vector<double> gradient(const std::vector<double>& x) {
     std::vector<double> grad(N, 0.0);
 
     for (int i = 0; i < N / 2; i++) {
-        double term1 = 400 * x[2 * i] * (pow(x[2 * i] * x[2 * i], 2) - x[2 * i + 1]);
+        double term1 = 400 * x[2 * i] * (x[2 * i] * x[2 * i] - x[2 * i + 1]);
         double term2 = 2 * (x[2 * i] - 1);
 
         grad[2 * i] += term1 + term2;
-        grad[2 * i + 1] -= 200 * (pow(x[2 * i] * x[2 * i], 2) - x[2 * i + 1]);
+        grad[2 * i + 1] -= 200 * (x[2 * i] * x[2 * i] - x[2 * i + 1]);
     }
 
     return grad;
@@ -42,7 +42,7 @@ std::vector<double> steepestDescent(const std::vector<double>& initialPoint, int
 
         // 计算步长
         double stepSize = 1.0;
-        double c = 0.05; // Armijo准则中的常数
+        double c = 0.5; // Armijo准则中的常数
 
 
         auto x_new = [](std::vector<double> x, std::vector<double> grad, double stepSize) {
@@ -67,9 +67,9 @@ std::vector<double> steepestDescent(const std::vector<double>& initialPoint, int
 }
 
 int main() {
-    int N = 100; // 参数个数，假设为偶数
-    int maxIterations = 1000; // 最大迭代次数
-    double alpha = 0.3; // 步长缩放因子
+    int N = 1000; // 参数个数，假设为偶数
+    int maxIterations = 2000; // 最大迭代次数
+    double alpha = 0.5; // 步长缩放因子
 
     std::vector<double> initialPoint(N, 0.0); // 初始点
 
